@@ -32,7 +32,7 @@ const App = () => {
   return (
     <div className="App">
       <AttentionBox
-        title="Hello Monday Apps!"
+        title="Testing if this works"
         text={attentionBoxText}
         type="success"
       />
