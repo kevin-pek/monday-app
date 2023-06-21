@@ -30,13 +30,13 @@ const App = () => {
 
   const remainingTime = (scheduledTime) => {
     const currentTime = new Date().getTime();
-    const difference = scheduledTime - currentTime;
+    const difference = new Date(scheduledTime).getTime() - currentTime;
     return difference;
   }
 
   const scheduleAPICall = (scheduledTime) => {
     const timeDifference = remainingTime(scheduledTime);
-
+    
     if (timeDifference > 0) {
       setTimeout(sendMessage, timeDifference);
     } else {
@@ -45,36 +45,44 @@ const App = () => {
   }
 
 
- const sendMessage = async () => {
+  const sendMessage = async () => {
     try {
       const updateSite = await axios.get(`https://api.telegram.org/bot${YOUR_TELEGRAM_BOT_TOKEN}/getUpdates`);
-      setGetUpdates(updateSite.data.result); //array with all the updates
+      setGetUpdates(updateSite.data.result); // array with all the updates
       const enteredUsername = document.getElementById('userName').value;
-      const enteredGroupname =document.getElementById('groupName').value;
-      //make filter algo here
-      getUpdates.map((update) => {
-        if( (update.message?.chat?.title===enteredGroupname) || (update.message?.from?.username===enteredUsername)) {
-          setChatID(update.message.chat.id);
-        }
-      })
+      const enteredGroupname = document.getElementById('groupName').value;
   
-
-
-      await axios.post(
-        `https://api.telegram.org/bot${YOUR_TELEGRAM_BOT_TOKEN}/sendMessage`,
-        {
-          chat_id: chatID,
-          text: message,
+      // Make sure getUpdates is an array
+      if (Array.isArray(getUpdates)) {
+        // Find the chat ID based on enteredUsername or enteredGroupname
+        const chatId = getUpdates.find((update) => {
+          return (
+            (update.message?.chat?.title === enteredGroupname) ||
+            (update.message?.from?.username === enteredUsername)
+          );
+        })?.message?.chat?.id;
+  
+        if (chatId) {
+          // Send the message
+          await axios.post(
+            `https://api.telegram.org/bot${YOUR_TELEGRAM_BOT_TOKEN}/sendMessage`,
+            {
+              chat_id: chatId,
+              text: message,
+            }
+          );
+          console.log("Message sent successfully!");
+        } else {
+          console.log("Chat ID not found.");
         }
-      );
-      console.log(getUpdates);
-      console.log("Message sent successfully!");
-      console.log()
+      } else {
+        console.log("Invalid getUpdates data.");
+      }
     } catch (error) {
-      console.log(chatID);
       console.error("Error sending message:", error);
     }
   };
+  
 
 
 

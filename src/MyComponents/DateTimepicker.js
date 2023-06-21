@@ -19,7 +19,7 @@ export const DateTimePicker = ({onScheduledTimeChange}) => {
           onChange={handleDateChange}
           showTimeSelect
           dateFormat="Pp"
-          timeIntervals={15}
+          timeIntervals={1}
         />
       </div>
     );
