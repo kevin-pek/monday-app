@@ -1,9 +1,12 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import {DateTimePicker} from './MyComponents/DateTimepicker.js'
+
 import axios from "axios";
 import "./App.css";
 import mondaySdk from "monday-sdk-js";
 import "monday-ui-react-core/dist/main.css";
+import { time } from "console";
 //Explore more Monday React Components here: https://style.monday.com/
 
 // Usage of mondaySDK example, for more information visit here: https://developer.monday.com/apps/docs/introduction-to-the-sdk/
@@ -15,10 +18,31 @@ const App = () => {
   const [groupName, setGroupname] = useState("");
   const [getUpdates, setGetUpdates] = useState([]);
   const [chatID, setChatID] = useState('');
-  
+  const [scheduledTime, setScheduledTime] = useState(null);
+
 
 
   const YOUR_TELEGRAM_BOT_TOKEN='5841007714:AAG7ER8SV1-0Jt0gMrSX1nYPmsGZZogznUM';
+  
+  const handleScheduledTimeChange = (newScheduledTime) => {
+    setScheduledTime(newScheduledTime);
+  };
+
+  const remainingTime = (scheduledTime) => {
+    const currentTime = new Date().getTime();
+    const difference = scheduledTime - currentTime;
+    return difference;
+  }
+
+  const scheduleAPICall = (scheduledTime) => {
+    const timeDifference = remainingTime(scheduledTime);
+
+    if (timeDifference > 0) {
+      setTimeout(sendMessage, timeDifference);
+    } else {
+      console.log('Scheduled time has already passed.');
+    }
+  }
 
 
  const sendMessage = async () => {
@@ -29,7 +53,7 @@ const App = () => {
       const enteredGroupname =document.getElementById('groupName').value;
       //make filter algo here
       getUpdates.map((update) => {
-        if((update.message?.from?.username===enteredUsername) || (update.message?.chat?.title===enteredGroupname)) {
+        if( (update.message?.chat?.title===enteredGroupname) || (update.message?.from?.username===enteredUsername)) {
           setChatID(update.message.chat.id);
         }
       })
@@ -78,6 +102,11 @@ const App = () => {
           />
       
         </div>
+        <div className='blockElement'>
+          <DateTimePicker onScheduledTimeChange={handleScheduledTimeChange}/>
+          
+        </div>
+      
  
       <input
         id='message'
@@ -86,7 +115,7 @@ const App = () => {
         onChange={(e) => setMessage(e.target.value)}
         placeholder="Enter your message"
       />
-      <button onClick={sendMessage}>Send Message</button>
+      <button onClick={()=>scheduleAPICall(scheduledTime)}>Send Message</button>
     </div>
 
       
