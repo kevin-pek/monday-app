@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import {DateTimePicker} from './MyComponents/DateTimepicker.js'
-
+import {DateTimePicker} from './MyComponents/DateTimepicker.js';
+import './MyComponents/DateTimepicker.js';
 import axios from "axios";
 import "./App.css";
 import mondaySdk from "monday-sdk-js";
@@ -18,10 +18,25 @@ const App = () => {
   const [groupName, setGroupname] = useState("");
   const [getUpdates, setGetUpdates] = useState([]);
   const [scheduledTime, setScheduledTime] = useState(null);
+  const [messageList, setMessageList] = useState([]);
 
- 
+  
   window.onload = () => {
     sendMessage();
+  }
+
+  const manageRequests = (selectedDate) => {
+    const utcDate = new Date(scheduledTime);
+
+// Calculate the user's local time by adding the time zone offset
+    
+// Format the local time as a string in the user's time zone
+    const localTimeString = utcDate.toLocaleString(undefined, { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone });
+
+// Output the result
+    console.log(localTimeString);
+    const newMessage = [message, localTimeString];
+    setMessageList(prevList => [...prevList, newMessage]);
   }
   
 
@@ -41,6 +56,10 @@ const App = () => {
 
   const scheduleAPICall = (scheduledTime) => {
     const timeDifference = remainingTime(scheduledTime);
+    if (timeDifference > 0 ) {
+      manageRequests();
+
+    }
     
     if (timeDifference > 0) {
       setTimeout(sendMessage, timeDifference);
@@ -77,6 +96,7 @@ const App = () => {
               text: message,
             }
           );
+          
           console.log("Message sent successfully!");
         } else {
           console.log("Chat ID not found.");
@@ -93,8 +113,7 @@ const App = () => {
   return (
     <div className="App">
       
-
-      <div>
+      <div className='setter'>
         <h2 className='blockElement'>Note the case sensitivity!</h2>
         <div  className='blockElement'>
           <input 
@@ -127,6 +146,20 @@ const App = () => {
         placeholder="Enter your message"
       />
       <button onClick={()=>scheduleAPICall(scheduledTime)}>Send Message</button>
+    </div>
+
+
+    <div className='blockElement'>
+      <div className='background'>
+        {messageList.map(([message, timestamp], index) => (
+        <div className='listView' key={index}>
+          <div className='message'>{message}</div>
+          <div className='timestamp'>{timestamp}</div>
+        </div>
+        ))}
+  
+      </div>
+
     </div>
 
       
