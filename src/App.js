@@ -17,8 +17,13 @@ const App = () => {
   const [userName, setUsername] = useState("");
   const [groupName, setGroupname] = useState("");
   const [getUpdates, setGetUpdates] = useState([]);
-  const [chatID, setChatID] = useState('');
   const [scheduledTime, setScheduledTime] = useState(null);
+
+ 
+  window.onload = () => {
+    sendMessage();
+  }
+  
 
 
 
@@ -49,6 +54,7 @@ const App = () => {
     try {
       const updateSite = await axios.get(`https://api.telegram.org/bot${YOUR_TELEGRAM_BOT_TOKEN}/getUpdates`);
       setGetUpdates(updateSite.data.result); // array with all the updates
+      console.log(getUpdates)
       const enteredUsername = document.getElementById('userName').value;
       const enteredGroupname = document.getElementById('groupName').value;
   
@@ -82,9 +88,6 @@ const App = () => {
       console.error("Error sending message:", error);
     }
   };
-  
-
-
 
 
   return (
