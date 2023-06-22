@@ -14,14 +14,18 @@ export const DateTimePicker = ({onScheduledTimeChange}) => {
 
     return (
       <div>
-        <DatePicker
-            placeholderText='Schedule Date&Time'
-          selected={selectedDate}
-          onChange={handleDateChange}
-          showTimeSelect
-          dateFormat="Pp"
-          timeIntervals={1}
-        />
+            <DatePicker
+            className='search-label datepicker'
+                placeholderText='Schedule Date&Time'
+            selected={selectedDate}
+            onChange={handleDateChange}
+            showTimeSelect
+            dateFormat="Pp"
+            timeIntervals={1}
+            />
+
+
+    
       </div>
     );
   };
