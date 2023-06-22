@@ -6,15 +6,33 @@ const app = express();
 app.use(express.json());
 
 app.post('/message', (req, res) => {
-    const { userId, messageDescription, generatedPrompt } = req.body;
+    const { username, email, recipientName, recipientType, description, prompt } = req.body;
 
-    db.insertUserPrompt(userId, messageDescription, generatedPrompt, (err) => {
+    db.insertUser(username, email, (err, userResults) => {
         if (err) {
-            console.error('Error inserting the data:', err);
+            console.error('Error inserting the user:', err);
             return res.status(500).send('Server error');
         }
 
-        res.send('Data inserted successfully');
+        const userId = userResults.insertId;
+
+        db.insertRecipient(recipientName, recipientType, (err, recipientResults) => {
+            if (err) {
+                console.error('Error inserting the recipient:', err);
+                return res.status(500).send('Server error');
+            }
+
+            const recipientId = recipientResults.insertId;
+
+            db.insertMessage(userId, recipientId, description, prompt, (err) => {
+                if (err) {
+                    console.error('Error inserting the message:', err);
+                    return res.status(500).send('Server error');
+                }
+
+                res.send('Data inserted successfully');
+            });
+        });
     });
 });
 
@@ -33,7 +51,6 @@ app.get('/messages/:userId', (req, res) => {
 
 const port = process.env.DB_PORT || 3000;
 
-// Starting the server
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });

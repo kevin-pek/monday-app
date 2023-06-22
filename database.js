@@ -26,8 +26,23 @@ const getUserPrompts = (userId, callback) => {
     `, [userId], callback);
 }
 
+function insertUser(username, email, callback) {
+    pool.query('INSERT INTO users (username, email) VALUES (?, ?)', [username, email], callback);
+}
+
+function insertRecipient(name, type, callback) {
+    pool.query('INSERT INTO recipients (name, type) VALUES (?, ?)', [name, type], callback);
+}
+
+function insertMessage(user_id, recipient_id, description, prompt, callback) {
+    pool.query('INSERT INTO messages (user_id, recipient_id, description, prompt) VALUES (?, ?, ?, ?)', [user_id, recipient_id, description, prompt], callback);
+}
+
 module.exports = {
-    insertUserPrompt,
+    insertUser,
+    insertRecipient,
+    insertMessage,
     getUserPrompts,
+    insertUserPrompt
 };
 
