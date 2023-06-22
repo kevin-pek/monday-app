@@ -2,11 +2,13 @@ const mysql = require('mysql');
 
 const pool = mysql.createPool({
     connectionLimit : 10,
-    host            : 'localhost',
-    user            : 'root',
-    password        : 'reet2002',
-    database        : 'mydb'
+    host            : process.env.DB_HOST,
+    user            : process.env.DB_USER,
+    password        : process.env.DB_PASS,
+    database        : process.env.DB_NAME
 });
+
+module.exports = pool;
 
 const insertUserPrompt = (userId, messageDescription, generatedPrompt, callback) => {
     pool.query(`
