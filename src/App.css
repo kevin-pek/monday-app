@@ -75,6 +75,15 @@ body {
   bottom:2vh;
   background-color: lightgreen;
 }
+.generateButton {
+
+  width: 3vw;
+  height: 5vh;
+  position:fixed;
+  right:2vw;
+  bottom:8vh;
+  background-color: blue;
+}
 
 .background {
   position: fixed;
@@ -98,6 +107,7 @@ body {
   align-items: center;
   justify-content: space-evenly;
   margin-bottom: 2%;
+  overflow:scroll;
 }
 
 .message {

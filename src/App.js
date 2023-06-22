@@ -4,7 +4,7 @@ import { DateTimePicker } from "./MyComponents/DateTimepicker.js";
 import { OpenAI } from 'openai';
 import { PromptTemplate } from 'langchain/prompts';
 import { LLMChain } from 'langchain/chains';
-
+import {GPTResponse} from './MyComponents/Langchain.js';
 import "./MyComponents/DateTimepicker.js";
 import axios from "axios";
 import "./App.css";
@@ -15,7 +15,6 @@ import { time } from "console";
 
 // Usage of mondaySDK example, for more information visit here: https://developer.monday.com/apps/docs/introduction-to-the-sdk/
 const monday = mondaySdk();
-
 const App = () => {
   const [message, setMessage] = useState("");
   const [userName, setUsername] = useState("");
@@ -24,12 +23,22 @@ const App = () => {
   const [scheduledTime, setScheduledTime] = useState(null);
   const [messageList, setMessageList] = useState([]);
   const [promptOptions, setPromptOptions] = useState({
-    'tone': '',
-    'format': '',
-    'length': '',
+    'tone': 'Casual',
+    'format': 'Message',
+    'length': 'Concise',
   });
-  const [langResponse, setLangResponse] = useState('');
+  const [prompt, setPrompt] = useState("");
 
+  let handleGPTGeneration = async () => {
+    let myprompt=prompt;
+    let response = await GPTResponse(myprompt, promptOptions);
+    let textfield = document.getElementById('message');
+    textfield = response.value;
+    setMessage(response);
+
+    console.log(response);
+
+  }
 
  
 
@@ -171,11 +180,7 @@ const App = () => {
   return (
     <div className="App">
       <div className="myBackground"></div>
-      {messageList.map(([message, timestamp]) => {
-        if (new Date(timestamp).getTime() == timeUpdate) {
-          scheduleAPICall();
-        }
-      })}
+      
       <div className="setter">
         <div className="blockElement inline">
           <label className="search-label">
@@ -203,16 +208,23 @@ const App = () => {
         <div className="messageSetting">
           <label className="search-label">
             <input
-              id="message"
               type="text"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
               placeholder="Enter your message"
             />
           </label>
+
           <button
             className="submitButton"
-            onClick={() => scheduleAPICall(scheduledTime)}
+            onClick={(e) => {
+              e.preventDefault();
+              scheduleAPICall(scheduledTime)
+            }}
+          ></button>
+            <button
+            className="generateButton"
+            onClick={() => handleGPTGeneration()}
           ></button>
         </div>
       </div>
@@ -307,10 +319,16 @@ const App = () => {
       </div>
 
       <div className='promptGeneration'>
-        <p className='normalText'>GPT-3.5 LLM Generation</p>
-        <textarea placeholder='generated text comes here' className='generatedText'>
+        <p className='normalText'>LLM Generation</p>
+        <textarea
+        type='text'
+        id="message"
 
-        </textarea>
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        placeholder='generated text comes here' 
+        className='generatedText'/>
+
       </div>
 
     </div>

@@ -301,9 +301,12 @@ module.exports = function (webpackEnv) {
         modules.additionalModulePaths || []
       ),
       fallback: {
+        fs: false,
         "util": require.resolve("util/"),
         "assert": require.resolve("assert/"),
-      },
+        "path": require.resolve("path-browserify"),
+        os: require.resolve('os-browserify/browser')
+        },
   
       // These are the reasonable defaults supported by the Node ecosystem.
       // We also include JSX as a common component filename extension to support
