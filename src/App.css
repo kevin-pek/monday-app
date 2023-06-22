@@ -77,12 +77,11 @@ body {
 }
 
 .background {
-  z-index:-1;
   position: fixed;
   width: 40vw;
   height: 50vh;
   top:5%;
-  left:10%;
+  right:5vw;
   background-color: rgb(231, 222, 223);
   overflow: scroll;
   border-radius: 2%;
@@ -114,11 +113,13 @@ body {
 .instructionManual {
   position: fixed;
   top:2% ;
-  right:5%;
+  left:5vw;
   width: 40vw;
   height: 50vh;
+  z-index: -1;
 
 }
+
 .instructionManual > * {
   display: block;
 }
@@ -146,26 +147,44 @@ body {
   font-family:'roboto';
   letter-spacing: 1.5;
 }
+.optionsText {
+  font-size: 1vw;
+  color: white;
+  font-family:'roboto';
+  letter-spacing: 1.5;
+  margin-top: -1.5vw;
+}
+
+.radioButtons {
+  width:1vw;
+  height: 1vw;
+  margin-right: 5vw;
+  margin-left: 5vw;
+  align-items: center;
+}
 
 .promptFormatting {
   position: fixed;
   bottom: 5vh;
-  left: 25vw;
+  left: 30vw;
   width: 30vw;
   height: 35vh;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  z-index:0;
   
 }
 .promptOption {
-  top:0;
-  position:relative;
+  bottom:35vh;
+  position:fixed;
   width:30vw;
 }
 .radioRow {
   display:flex;
   justify-content: space-evenly;
+  position:fixed;
+
 }
 
 .promptGeneration {
@@ -185,4 +204,18 @@ body {
   height: 30vh;
   background-color: white;
 
+}
+
+.promptOption2 {
+  bottom:20vh;
+  position:fixed;
+  width:30vw;
+
+
+}
+.promptOption3{
+  bottom:05vh;
+  position:fixed;
+  width:30vw;
+  
 }

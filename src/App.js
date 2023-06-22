@@ -1,6 +1,10 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { DateTimePicker } from "./MyComponents/DateTimepicker.js";
+import { OpenAI } from 'openai';
+import { PromptTemplate } from 'langchain/prompts';
+import { LLMChain } from 'langchain/chains';
+
 import "./MyComponents/DateTimepicker.js";
 import axios from "axios";
 import "./App.css";
@@ -19,12 +23,54 @@ const App = () => {
   const [getUpdates, setGetUpdates] = useState([]);
   const [scheduledTime, setScheduledTime] = useState(null);
   const [messageList, setMessageList] = useState([]);
+  const [promptOptions, setPromptOptions] = useState({
+    'tone': '',
+    'format': '',
+    'length': '',
+  });
+  const [langResponse, setLangResponse] = useState('');
 
-  let timeUpdate = new Date().getTime();
+
+ 
 
   window.onload = () => {
     sendMessage();
+
   };
+  let timeUpdate = new Date().getTime();
+
+  const toneOptionChange= (event) => {
+    const newTone = event.target.value;
+    setPromptOptions((prevOptions) => ({
+      ...prevOptions,
+      'tone': newTone,
+    }))
+  }
+  const formatOptionChange= (event) => {
+    const newFormat = event.target.value;
+    setPromptOptions((prevOptions) => ({
+      ...prevOptions,
+      'format': newFormat,
+    }))
+
+  }
+  const lengthOptionChange= (event) => {
+    const newLength = event.target.value;
+    setPromptOptions((prevOptions) => ({
+      ...prevOptions,
+      'length': newLength,
+    }))
+
+  }
+
+  useEffect(() => {
+    console.log(promptOptions);
+  }, [promptOptions]);
+  
+  
+
+
+
 
   const manageRequests = (selectedDate) => {
     const utcDate = new Date(scheduledTime);
@@ -152,9 +198,9 @@ const App = () => {
           </label>
         </div>
         <div className="blockElement">
-          <DateTimePicker onScheduledTimeChange={handleScheduledTimeChange} />
+          <DateTimePicker className='datepicker' onScheduledTimeChange={handleScheduledTimeChange} />
         </div>
-        <div class="messageSetting">
+        <div className="messageSetting">
           <label className="search-label">
             <input
               id="message"
@@ -203,60 +249,65 @@ const App = () => {
       </div>
       <div className="promptFormatting">
         <div className="promptOption">
-          <p className="normalText">Prompt question 1 goes here?</p>
+          <p className="normalText">What tone would you like?</p>
           <div className="radioRow">
             <label>
-              <input name="options" type="radio" value="option1" />
-              Option1
+              <input id='testing' onChange={toneOptionChange} className='radioButtons' name="options" type="radio" value="Academic" />
+              <p className='optionsText'>Academic</p>
             </label>
             <label>
-              <input name="options" type="radio" value="option2" />
-              Option2
+              <input onChange={toneOptionChange}  className='radioButtons' name="options" type="radio" value="Casual" />
+              <p className='optionsText'>Casual</p>
+
             </label>
             <label>
-              <input name="options" type="radio" value="option3" />
-              Option3
+              <input onChange={toneOptionChange}  className='radioButtons' name="options" type="radio" value="Formal" />
+              <p className='optionsText'>Formal</p>
             </label>
           </div>
         </div>
-        <div className="promptOption">
-          <p className="normalText">Prompt question 2 goes here?</p>
+        <div className="promptOption2">
+          <p className="normalText">What format would you like?</p>
           <div className="radioRow">
             <label>
-              <input name="options2" type="radio" value="option1" />
-              Option1
+              <input onChange={formatOptionChange} className='radioButtons' name="options2" type="radio" value="List" />
+              <p className='optionsText'>List</p>
             </label>
             <label>
-              <input name="options2" type="radio" value="option2" />
-              Option2
+              <input onChange={formatOptionChange} className='radioButtons' name="options2" type="radio" value="Tele Blast" />
+              <p className='optionsText'>Tele Blast</p>
+
             </label>
             <label>
-              <input name="options2" type="radio" value="option3" />
-              Option3
+              <input onChange={formatOptionChange} className='radioButtons' name="options2" type="radio" value="Message" />
+              <p className='optionsText'>Message</p>
             </label>
           </div>
         </div>
-        <div className="promptOption">
-          <p className="normalText">Prompt question 3 goes here?</p>
+        <div className="promptOption3">
+          <p className="normalText">How long would you like your message?</p>
           <div className="radioRow">
             <label>
-              <input name="options3" type="radio" value="option1" />
-              Option1
+              <input onChange={lengthOptionChange} className='radioButtons' name="options3" type="radio" value="Concise" />
+              <p className='optionsText'>Concise</p>
             </label>
             <label>
-              <input name="options3" type="radio" value="option2" />
-              Option2
+              <input onChange={lengthOptionChange}  className='radioButtons' name="options3" type="radio" value="Medium" />
+              <p className='optionsText'>Medium</p>
+
             </label>
             <label>
-              <input name="options3" type="radio" value="option3" />
-              Option3
+              <input onChange={lengthOptionChange}  className='radioButtons' name="options3" type="radio" value="Essay" />
+              <p className='optionsText'>Essay</p>
             </label>
           </div>
         </div>
+    
+
       </div>
 
       <div className='promptGeneration'>
-        <p class='normalText'>GPT-3.5 LLM Generation</p>
+        <p className='normalText'>GPT-3.5 LLM Generation</p>
         <textarea placeholder='generated text comes here' className='generatedText'>
 
         </textarea>

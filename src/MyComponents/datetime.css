@@ -1,3 +1,4 @@
 .datepicker {
     width: 16.5vw;
+    z-index: 2;
 }
