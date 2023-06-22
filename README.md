@@ -1,16 +1,18 @@
-## Overview
-This is the "Quickstart React" example Monday app. 
-<br>It can be used as a board view or dashboard widget, connected to a board and render data from the board using settings.
+##WELCOME TO TELEASSIST!
 
-<br>This app demonstrates how to use: 
-- [settings](https://github.com/mondaycom/monday-sdk-js#mondaygettype-params--) 
-- [context](https://github.com/mondaycom/monday-sdk-js#mondaygettype-params--) 
-- [API](https://github.com/mondaycom/monday-sdk-js#mondayapiquery-options--)
+TeleAssist is your personal telegram messaging bot! You can use our app to schedule your messages on your telegram groups at any time you like. Take advantage of our LLM model to generate the messages of your choice by inputting simple prompts.
 
-<br>You can find more info in our QuickStart guide [here](https://monday.com/developers/apps/quickstart-view/)
-<br /> ![Screenshot](https://dapulse-res.cloudinary.com/image/upload/w_900/v1591485466/remote_mondaycom_static/developers/screenshots/final_view.gif)
+
+##Getting Started with Telegram
+- Search up 'theTeleAssistantBot' on Telegram
+- Add the bot to your desired group
+- Enter your username and telegram group name in the app
+- Send messages right away using our LLM Model
+
+  
 
 ## Run the project
+- Go to Branch 'New_Bot' and Download/Pull the code
 
 In the project directory, you should run:
 
