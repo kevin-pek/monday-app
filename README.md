@@ -1,9 +1,9 @@
-##WELCOME TO TELEASSIST!
+## WELCOME TO TELEASSIST!
 
 TeleAssist is your personal telegram messaging bot! You can use our app to schedule your messages on your telegram groups at any time you like. Take advantage of our LLM model to generate the messages of your choice by inputting simple prompts.
 
 
-##Getting Started with Telegram
+## Getting Started with Telegram
 - Search up 'theTeleAssistantBot' on Telegram
 - Add the bot to your desired group
 - Enter your username and telegram group name in the app
